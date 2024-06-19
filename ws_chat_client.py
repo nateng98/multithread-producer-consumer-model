@@ -66,7 +66,7 @@ def main():
     finally:
         try:
             send_frame(sock, a2lib.wslib.Opcode.CLOSE)
-        except:
+        except Exception as e:
             pass
         sock.close()
         print("Connection closed.")
@@ -125,6 +125,7 @@ def close_frame(sock, frame):
 def pong_response(sock, frame):
     if frame.opcode == a2lib.wslib.Opcode.PING:
         send_frame(sock, a2lib.wslib.Opcode.PONG, frame.data)
+        print('do ping-pong')
     elif frame.opcode == a2lib.wslib.Opcode.CLOSE:
         close_frame(sock, frame)
         return True
@@ -145,7 +146,7 @@ def handle_user_input(sock, timeout):
                 sys.stdout.flush()
                 message = input()
                 
-                # Attempt to encode, handle potential errors
+                # handle potential errors due to not able to encode special characters
                 try:
                     message_encoded = message.encode('utf-8')
                 except UnicodeEncodeError:
@@ -232,7 +233,7 @@ def handle_consumer(sock, t_out):
     end_time = time.time() + t_out
     while True and time.time() < end_time:
         try:
-            # Use select to check if the socket is ready for reading
+            # check if the socket is ready for reading
             ready, _, _ = select.select([sock], [], [], t_out)
             if sock in ready:
                 frame = receive_frame(sock)
