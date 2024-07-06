@@ -1,6 +1,5 @@
-# comp3010a2
-## COMP3010 Assignment 2: Live chat
-### Part 1:
+# Live chat
+## owl.cs.umanitoba.ca server is down after June 14, 2024. There is `ws_chat_test_server.py` that runs server on your local machine to test `ws_chat_client.py` out
 
 **Usage**
 
